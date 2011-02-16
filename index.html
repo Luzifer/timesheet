@@ -11,7 +11,7 @@
 		<script type="text/javascript" charset="utf-8" src="https://github.com/zefhemel/persistencejs/raw/b005d8965df1db886e3f9cb52335b59d6aa11aa6/lib/persistence.store.sql.js"></script>
 		<script type="text/javascript" charset="utf-8" src="https://github.com/zefhemel/persistencejs/raw/b005d8965df1db886e3f9cb52335b59d6aa11aa6/lib/persistence.store.websql.js"></script>
 		<script type="text/javascript" charset="utf-8">
-		<![CDATA[
+		/* <![CDATA[ */
 		var Entry=null;function setupDatabase(){persistence.store.websql.config(persistence,'timesheet','Timesheet persistent data',5*1024*1024);Entry=persistence.define('Entry',{start:"DATE",end:"DATE",topic:"TEXT"});persistence.schemaSync();}
 		function loadDatabase(){var entries=Entry.all().order('start',true);entries.count(null,function(ct){if(ct>0){$('#entries').text('');}});entries.each(null,function(r){console.log(r.topic);console.log(r.id);displayEntry(r);});}
 		String.prototype.repeat=function(num){for(var i=0,buf="";i<num;i++)buf+=this;return buf;}
@@ -30,7 +30,7 @@
 		if($('.entry').length<1){$('#entries').text('');}
 		var ds=new Entry({start:parsedate($('#start').text()),end:parsedate($('#end').text()),topic:$('#topic').val()});persistence.add(ds);persistence.flush();displayEntry(ds);$('#start').text($('#end').text());$('#topic').val('');}
 		$(function(){setupDatabase();loadDatabase();$('#start').text(now());setInterval("endnow()",500);$('#topic').keypress(function(e){if(e.which==13){enterDetail();}});$('#topic').focus();});
-		]]>
+		/* ]]> */
 		</script>
 	</head>
 	<body>
