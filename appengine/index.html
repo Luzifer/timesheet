@@ -9,11 +9,11 @@
 		<script type="text/javascript" charset="utf-8" src="/static/jquery.min.js"></script>
 		<script type="text/javascript" charset="utf-8" src="/static/persistence.js"></script>
 		<script type="text/javascript" charset="utf-8" src="/static/persistence.store.sql.js"></script>
-		<script type="text/javascript" charset="utf-8" src="/static/persistence.store.websql.js"></script>
+		<script type="text/javascript" charset="utf-8" src="/static/persistence.store.memory.js"></script>
 		<script type="text/javascript" charset="utf-8">
 		/* <![CDATA[ */
-		var Entry=null;function setupDatabase(){persistence.store.websql.config(persistence,'timesheet','Timesheet persistent data',5*1024*1024);Entry=persistence.define('Entry',{start:"DATE",end:"DATE",topic:"TEXT"});persistence.schemaSync();}
-		function loadDatabase(){var entries=Entry.all().order('start',true);entries.count(null,function(ct){if(ct>0){$('#entries').text('');}});entries.each(null,function(r){console.log(r.topic);console.log(r.id);displayEntry(r);});}
+		var Entry=null;function setupDatabase(){persistence.store.memory.config(persistence);Entry=persistence.define('Entry',{start:"DATE",end:"DATE",topic:"TEXT"});persistence.schemaSync();}
+		function loadDatabase(){persistence.loadFromLocalStorage();var entries=Entry.all().order('start',true);entries.count(null,function(ct){if(ct>0){$('#entries').text('');}});entries.each(null,function(r){displayEntry(r);});}
 		String.prototype.repeat=function(num){for(var i=0,buf="";i<num;i++)buf+=this;return buf;}
 		String.prototype.rjust=function(width,padding){padding=padding||" ";padding=padding.substr(0,1);if(this.length<width)
 		return padding.repeat(width-this.length)+this;else
@@ -24,11 +24,11 @@
 		function datetostring(date){var str=(date.getDay()+"").rjust(2,"0")+"."+((date.getMonth()+1)+"").rjust(2,'0')+". "+(date.getHours()+"").rjust(2,'0')+":"+(date.getMinutes()+"").rjust(2,'0');return str;}
 		function endnow(){$('#end').text(now());}
 		function entryClick(){$('#topic').val($(this).find('.text').text()).focus();}
-		function entryDblClick(){var e_id=$(this).attr('dbid');Entry.all().filter('id','=',e_id).each(null,function(e){persistence.remove(e);persistence.flush();});$(this).slideUp();$('#topic').focus().val('');}
+		function entryDblClick(){var e_id=$(this).attr('dbid');Entry.all().filter('id','=',e_id).each(null,function(e){persistence.remove(e);persistence.flush();persistence.saveToLocalStorage();});$(this).slideUp();$('#topic').focus().val('');}
 		function displayEntry(entry){var top=$('<div>');top.addClass('entry invisible');var difference=$('<div>');difference.addClass('left tdiff');difference.text(diff(entry.start,entry.end)+"h");top.append(difference);var start=$('<div>');start.addClass('left time');start.text(datetostring(entry.start));top.append(start);var end=$('<div>');end.addClass('left time');end.text(datetostring(entry.end));top.append(end);var topic=$('<div>');topic.addClass('left text');topic.text(entry.topic);top.append(topic);top.append($('<div>').addClass('clear'));top.attr('dbid',entry.id);top.bind('click',entryClick);top.bind('dblclick',entryDblClick);$('#entries').prepend(top);top.slideDown();}
 		function enterDetail(){if($('#topic').val()==""){$('#start').text(now());return;}
 		if($('.entry').length<1){$('#entries').text('');}
-		var ds=new Entry({start:parsedate($('#start').text()),end:parsedate($('#end').text()),topic:$('#topic').val()});persistence.add(ds);persistence.flush();displayEntry(ds);$('#start').text($('#end').text());$('#topic').val('');}
+		var ds=new Entry({start:parsedate($('#start').text()),end:parsedate($('#end').text()),topic:$('#topic').val()});persistence.add(ds);persistence.flush();persistence.saveToLocalStorage();displayEntry(ds);$('#start').text($('#end').text());$('#topic').val('');}
 		$(function(){setupDatabase();loadDatabase();$('#start').text(now());setInterval("endnow()",500);$('#topic').keypress(function(e){if(e.which==13){enterDetail();}});$('#topic').focus();});
 		/* ]]> */
 		</script>
