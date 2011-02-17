@@ -21,7 +21,7 @@
 		function now(){var now=new Date();return datetostring(now);}
 		function parsedate(text){var dt=text.split(' ');var date=dt[0].split('.');var time=dt[1].split(':');var now=new Date();return new Date(now.getYear()+1900,date[1],date[0],time[0],time[1],0);}
 		function diff(start,end){var difference=end.getTime()-start.getTime();d=Math.round((difference/1000/3600)*100)/100;return d;}
-		function datetostring(date){var str=(date.getDay()+"").rjust(2,"0")+"."+((date.getMonth()+1)+"").rjust(2,'0')+". "+(date.getHours()+"").rjust(2,'0')+":"+(date.getMinutes()+"").rjust(2,'0');return str;}
+		function datetostring(date){var str=(date.getDate()+"").rjust(2,"0")+"."+((date.getMonth()+1)+"").rjust(2,'0')+". "+(date.getHours()+"").rjust(2,'0')+":"+(date.getMinutes()+"").rjust(2,'0');return str;}
 		function endnow(){$('#end').text(now());}
 		function entryClick(){$('#topic').val($(this).find('.text').text()).focus();}
 		function entryDblClick(){var e_id=$(this).attr('dbid');Entry.all().filter('id','=',e_id).each(null,function(e){persistence.remove(e);persistence.flush();persistence.saveToLocalStorage();});$(this).slideUp();$('#topic').focus().val('');}

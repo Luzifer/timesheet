@@ -87,7 +87,7 @@
 			}
 			function datetostring(date) {
 				// Format the datetime to d.m. H:i (Stupid JS doesn't know about strftime)
-				var str = (date.getDay() + "").rjust(2, "0") + "." + ((date.getMonth() + 1) + "").rjust(2, '0') + ". " + (date.getHours() + "").rjust(2, '0') + ":" + (date.getMinutes() + "").rjust(2, '0');
+				var str = (date.getDate() + "").rjust(2, "0") + "." + ((date.getMonth() + 1) + "").rjust(2, '0') + ". " + (date.getHours() + "").rjust(2, '0') + ":" + (date.getMinutes() + "").rjust(2, '0');
 				return str;
 			}
 			function endnow() {$('#end').text(now());}
