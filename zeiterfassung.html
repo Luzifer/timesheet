@@ -77,7 +77,7 @@
 				var date = dt[0].split('.');
 				var time = dt[1].split(':');
 				var now = new Date();
-				return new Date(now.getYear() + 1900, date[1], date[0], time[0], time[1], 0);
+				return new Date(now.getYear() + 1900, parseInt(date[1]) - 1, date[0], time[0], time[1], 0);
 			}
 			function diff(start, end){
 				// Calculate the difference of the times in hours
